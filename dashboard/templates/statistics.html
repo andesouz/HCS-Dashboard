@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="row p-3">
+    <div class="col col-12 text-center m-4">
+      <h2> Statistics </h2>
+      <h6> Data Range: {{ start_date.strftime("%b-%d-%Y") }} to {{ end_date.strftime("%b-%d-%Y") }}</h6>
+    </div>
+  </div> <!-- row -->
+
+{% if tables %}
+
+  <div id="dataTable" class="container">
+    <ul  class="nav nav-tabs" role="tablist">
+      {% for table in tables %}
+        <li class="nav-item">
+          <a class="nav-link {% if loop.index == 1 %} active {% endif %}" href="#panel{{ loop.index }}" data-toggle="tab" role="tab">{{ table.table_title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <div class="tab-content">
+      {% for table in tables %}
+         <div role="tabpanel" class="tab-pane {% if loop.index == 1 %}  active {% endif %}" id="panel{{ loop.index }}">
+            <h5 class="m-3 text-center">{{ table.table_title }}</h5>
+            <table class="table table-condensed">
+              <tr>
+                {% for column in table.table_headers %}
+                  <th> {{ column | capitalize }}</th>
+                {% endfor %}
+              </tr>
+            {% for row in table.table_rows %}
+              <tr>
+                {% for data in row %}
+                  <td> {{ data }}</td>
+                {% endfor %}
+              </tr>
+            {% endfor %}
+            </table>
+         </div>
+      {% endfor %}
+    </div>
+  </div> <!-- container -->
+
+{% else %}
+  <h5 class="text-center m-5"> No Data Available</h5>
+{% endif%}
+
+{% endblock content %}

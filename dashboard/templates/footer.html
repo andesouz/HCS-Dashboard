@@ -1,0 +1,31 @@
+<div id="footer" class="row m-3">
+  <div class="col-12 text-justify">
+  <div class="row">
+    <div class="col text-center">
+      <p>
+        <small> This content is not affiliated with, endorsed, sponsored, or specifically approved by Hertz and Hertz is
+          not responsible for it.
+        </small>
+        <br/>
+        <small> Find the code for this website at Github</small>
+      </p>
+    </div>
+  </div>
+    <div class="row">{% if queries %}
+      <h5 class="text-center"> For test purpose only: Query List</h5>
+      <table class="table-condensed table">
+        {% for query in queries %}
+          <tr>
+            <td width="5%">{{ loop.index }}</td>
+            <td width="60%"><p>{{ query.statement }}</p></td>
+            <td width="20%"><p>{{ query.parameters }}</p></td>
+            {#          <td> {{ query.start_time }} :: {{ query.end_time }}</td>#}
+            <td width="5%"><p>{{ '{:.3f}'.format(query.duration) }}</p></td>
+            <td width="10%"><p>{{ query.context }}</p></td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% endif %}
+    </div>
+  </div>
+</div>

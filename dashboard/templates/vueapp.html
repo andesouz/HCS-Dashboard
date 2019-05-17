@@ -1,0 +1,58 @@
+<script>
+  new Vue({
+    el: '#form_feeder',
+    data: {
+      message: '',
+      maker_select: '{% if filters and filters["maker"] %}{{ filters["maker"]}}{% endif %}',
+      makers: [
+        {text: "All", value: ""},
+        {% for maker in form_data['makers'] %}
+          {text: "{{ maker }}", value: "{{ maker }}"},
+        {% endfor %}
+      ] ,
+      model_select: '{% if filters and filters["model"] %}{{ filters["model"]}}{% endif %}',
+      models: [
+        {text: "All", value: ""},
+        {% for model in form_data['models'] %}
+          {text: "{{ model | capitalize | truncate(12) }}", value: "{{ model }}"},
+        {% endfor %}
+
+      ] ,
+      style_select: '{% if filters and filters["style"] %}{{ filters["style"]}}{% endif %}',
+      styles: [
+        {text: "All", value: ""},
+        {% for style in form_data['styles'] %}
+          {text: "{{ style }}", value: "{{ style }}"},
+        {% endfor %}
+
+      ] ,
+      year_select: '{% if filters and filters["year"] %}{{ filters["year"]}}{% endif %}',
+      years: [
+        {text: "All", value: ""},
+        {% for year in form_data['years'] %}
+          {text: "{{ year }}", value: "{{ year }}"},
+        {% endfor %}
+      ]
+    },
+    methods: {
+      dynamicUpdate: function () {
+        const params = [];
+        const filters = [
+          {k:'maker', v:this.maker_select},
+          {k:'model', v:this.model_select},
+          {k:'style', v:this.style_select},
+          {k:'year',  v:this.year_select}
+        ];
+        for (let i in filters) {
+          let m =  filters[i];
+          if ( m.v )  {
+            params.push(encodeURIComponent(m.k) + '=' + encodeURIComponent(m.v));
+            console.log('push');
+          }
+        }
+        let current_url = window.location.href
+        window.location.href = current_url.split("?")[0] + '?' + params.join('&');
+      }
+    }
+  })
+</script>

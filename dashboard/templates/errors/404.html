@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="row">
+    <div class="col-10 offset-1 text-center">
+    <h2> Oops! Something didn't quite work as expected!!!</h2>
+      {%  if error %}
+        <h3> {{ error.code  }} </h3>
+        <h5> {{ error.name }}</h5>
+        <p> {{ error.description }} </p>
+      {% else %}
+        <h3> Something went wrong, please try another page!!!</h3>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

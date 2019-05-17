@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!-- FOR DESIGN PURPOSE ONLY - TEST ENVIRONMENT -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="with=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vue Js Crash Course</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+<div id="app">
+  <div class="container">
+    <div class="row m-4">
+      <div class="col-8 offset-2">
+        <h1> Vue Experiment</h1>
+        <p>{{ message }}</p>
+        <select v-on:change="changeImage" v-model="selected">
+          <option v-for="option in options" v-bind:value="option.value">{{ option.text }}</option>
+        </select>
+        <span class="m-4">Selected: {{ selected }}</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-10 offset-1 text-center">
+        <img :src="image_src" style="width: 600px; margin: 25px">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      message: 'Select a mode of operation',
+      selected: '',
+      options: [
+        {text: 'None', value: 0 },
+        {text: 'B1', value: 1},
+        {text: 'B2', value: 2},
+        {text: 'B3', value: 3},
+        {text: 'B4', value: 4},
+        {text: 'B5', value: 5},
+      ],
+      image_src: '',
+      images: [
+        '',
+        'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.mostbeautifulthings.net%2Fwp-content%2Fuploads%2F2014%2F04%2Fbeautiful-birds-151.jpg&f=1',
+        'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.mostbeautifulthings.net%2Fwp-content%2Fuploads%2F2014%2F04%2Fbeautiful-birds-17.jpg&f=1',
+        'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fanimalsbirds.com%2Fwp-content%2Fuploads%2F2016%2F07%2FCute-Love-Bird-Colorful-Parrot-Pictures-Wallpapers.jpg&f=1',
+        'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fonehdwallpaper.com%2Fwp-content%2Fuploads%2F2015%2F07%2FMost-Beautiful-Bird-In-India-Peacock-Wallpaper.jpg&f=1',
+        'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fbeautifulhdwallpaper.com%2Fwp-content%2Fuploads%2F2014%2F09%2FMost-beautiful-bird-HD-wallpaper.jpg&f=1'
+      ],
+      data: {
+        'maker':'Toyota',
+        'model':'Corolla',
+        'year':2017
+      }
+    },
+    methods: {
+      changeImage: function () {
+        this.image_src = this.images[this.selected];
+        this.encodeQueryData()
+      },
+      encodeQueryData: function () {
+        const ret = [];
+        for (let d in this.data)
+          ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(this.data[d]));
+        this.message = window.location.host + '?' + ret.join('&');
+      }
+    }
+  })
+</script>
+</body>
+</html>
+<!--  window.href = 'set new url ... ' -->

@@ -1,0 +1,27 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+SQLAlchemy = "*"
+ipython = "*"
+"psycopg2-binary" = "*"
+selenium = "*"
+matplotlib = "*"
+sympy = "*"
+Flask = "*"
+Flask-WTF = "*"
+Flask-SQLAlchemy = "*"
+Flask-Bcrypt = "*"
+Flask-Login = "*"
+Flask-Mail = "*"
+pandas = "*"
+Flask-RESTful = "*"
+
+
+[dev-packages]
+

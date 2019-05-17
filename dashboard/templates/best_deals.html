@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row p-3 text-center">
+    {% if data %}
+      <div class="col col-6">
+        <p> Vehicles Found: {{ data.total }}</p>
+      </div>
+      <div class="col col-6">
+        <p> Latest Price Collection Date: <b>{{ latest_date.strftime("%b-%d-%Y") }}</b></p>
+      </div>
+    {% endif %}
+    <div class="col-12 text-center">
+      <h3> {% if title %} {{ title }} {% endif %}</h3>
+    </div>
+  </div> <!-- row -->
+  <div class="row">
+    <div class="col-12 col-sm-10 offset-sm-1 col-lg-8 offset-lg-2 text-justify">
+      <p>Vehicles listed according to the highest discount price when compared to Kelly Blue Book price reference.<br/>
+        Use filters to narrow your selection. </p>
+    </div>
+  </div> <!-- row -->
+{% endblock content %}
+
+{% block display %}
+  {% if data %}
+    {% include 'filters.html' %}
+    {% if data.total > 0 %}
+      {% include 'pagination.html' %}
+      {% include 'car_list.html' %}
+      {% include 'pagination.html' %}
+
+    {% else %}
+      <div class="row">
+        <div class="col col12">
+          <h3 class="text-center m-4">No data available</h3>
+        </div>
+      </div>
+    {% endif %}
+  {%  endif %}
+{% endblock display %}}
+
+
+
+
+{% block scripts %}
+  {% include 'vueapp.html' %}
+{%  endblock %}

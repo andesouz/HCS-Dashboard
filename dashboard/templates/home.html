@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-12 m-2">
+      <h3> Hertz Car Sales Dashboard</h3>
+      <p>This website provides analytics for Hertz Car sales web portal. It intends to make easy for potential buyers to
+        find great deals. Price history is available for all vehicles current active.</p>
+      <p>All listings monitored here are based on a geographical search centered in San Diego, CA and extending for a 100
+        miles.</p>
+      <p>This website is designed as a proof of concept and has no commercial purposes. There are absolute no warranties,
+        including accuracy or consistency, for any listing displayed here. HCS Dashboard is not affiliated in any way, shape or form with Hertz Car Sales. </p>
+
+      <p>Data collection happens once a day.</p>
+
+      <p>Some pages require registration. For access, please <a href="{{ url_for('users.registration') }}">sign up</a> today.</p>
+    </div>
+  </div>
+
+{% endblock content %}
+
+{% block display %}
+  {% if data %}
+    {% if data.total > 0 %}
+      <div class="row p-3 text-center">
+        <div class="col col-6">
+          <p> Vehicles Found: {{ data.total }}</p>
+        </div>
+        <div class="col col-6">
+          <p> Latest Price Collection Date: <b>{{ latest_date.strftime("%b-%d-%Y") }}</b></p>
+        </div>
+        <div class="col-12 text-center">
+          {% if title %}
+            <h3> {{ title }}</h3>
+          {%  endif %}
+        </div>
+      </div> <!-- row -->
+
+      {% include 'filters.html' %}
+      {% include 'pagination.html' %}
+      {% include 'car_list.html' %}
+      {% include 'pagination.html' %}
+
+    {% else %}
+      <div class="row">
+        <div class="col col12">
+          <h3 class="text-center m-4">No data available</h3>
+        </div>
+      </div>
+    {% endif %}
+  {% endif %}
+{% endblock display %}}
+
+{% block scripts %}
+  {% if date %}
+    {% include 'vueapp.html' %}
+  {% endif %}
+{% endblock scripts %}

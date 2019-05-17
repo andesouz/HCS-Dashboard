@@ -1,0 +1,17 @@
+<div class="row">
+  {% if menu_active == 'hcs.price_drops' %}
+    {% for price, difference in data.items %}
+      {% with  %}
+        {% set loop_index = loop.index %}
+        {% include 'car_block.html' %}
+      {% endwith %}
+    {% endfor %}
+  {% else %}
+    {% for price in data.items %}
+      {% with  %}
+        {% set loop_index = loop.index %}
+        {% include 'car_block.html' %}
+      {% endwith %}
+    {% endfor %}
+  {%  endif %}
+</div> <!-- row -->

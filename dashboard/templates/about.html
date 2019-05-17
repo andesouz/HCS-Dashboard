@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% set menu_active = 'about' %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-12 m-2 text-justify">
+      <h2 class="text-center"> About HCS Dashboard </h2>
+      <p>HCS Dashboard is a data enhancement dashboard design to make easier to find “good deals” at the Hertz Car sales
+        website. It provides some enhancements over the set of filters available at the source website, including
+        historical data on pricing, price drops and ranking of best deals as compared to Kelly Blue Book pricing. </p>
+
+      <p>HCS Dashboard in comprised of two part:</p>
+      <ul>
+        <li class="list-item">HCS Dashboard Flask Application</li>
+        <li class="list-item">HCS Scraper</li>
+      </ul>
+
+      <h4 class="text-center">HCS Dashboard Flask Application</h4>
+      <p>Web portal based on Python Flask micro web framework. Here we list some of the application components:</p>
+      <h6>PostgreSQL</h6>
+      <p>Choice of database for this project.</p>
+      <h6>Flask-SQLAlchemy</h6>
+      <p>Flask wrapper for SQLAlchemy. The ORM layer is used extensively</p>
+      <h6>Flask-Restful</h6>
+      <p>A REST-API was implemented to allow database updates from a remote machine. As the system is currently
+        deployed, the scraper does not run in the same web server machine.</p>
+      <h6>Jinja2</h6>
+      <p>Template language used. </p>
+      <h6>VueJS</h6>
+      <p>JavaScript framework for client functionality, like filters.</p>
+      <h6>Nginx and Gunicorn</h6>
+      <p>Deployment: Nginx as a reverse proxy and Gunicorn as Python WSGI HTTP server.</p>
+
+      <h4 class="text-center"> HCS Scraper </h4>
+      <p>The Hertz Car Sales website is heavily dependent on JavaScript. Therefore, it cannot be scraped with
+        lightweight HTML only libraries. We use Selenium with Python bindings and Firefox WebDriver. The scraper
+        runs once a day. Check <i>"hcs_scraper.py"</i> in the code base. </p>
+      <p>You can find the code for this project at Github. </p>
+
+    </div>
+  </div>
+{% endblock content %}

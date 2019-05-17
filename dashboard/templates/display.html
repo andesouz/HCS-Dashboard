@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+  {% if data %}
+    <div class="row p-3 text-center">
+      <div class="col col-6">
+        <p> Vehicles Found: {{ data.total }}</p>
+      </div>
+      <div class="col col-6">
+        <p> Latest Price Collection Date: <b>{{ latest_date.strftime("%b-%d-%Y") }}</b></p>
+      </div>
+      <div class="col-12 text-center">
+        {% if title %}
+          <h3> {{ title }}</h3>
+        {%  endif %}
+      </div>
+    </div> <!-- row -->
+  {% endif %} {# if data #}
+{% endblock content %}
+
+
+
+{% block display %}
+  {% if data %}
+    {% include 'filters.html' %}
+
+    {% if data.total > 0 %}
+      {% include 'pagination.html' %}
+      {% include 'car_list.html' %}
+      {% include 'pagination.html' %}
+    {% else %}
+      <div class="row">
+        <div class="col col12">
+          <h5 class="text-center m-4">No vehicles match this criteria</h5>
+        </div>
+      </div>
+    {%  endif %}
+
+  {% else %}
+    <div class="row">
+      <div class="col col12">
+        <h3 class="text-center m-5">No data available</h3>
+      </div>
+    </div>
+  {% endif %} {# if data #}
+{% endblock display %}}
+
+
+
+{% block scripts %}
+  {% if data %}
+    {% if form_data %}
+      {% include 'vueapp.html' %}
+    {% endif %}
+  {% endif %}{# if data #}
+{% endblock %}
+

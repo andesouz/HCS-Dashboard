@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% set menu_active = 'login' %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-10 offset-1 col-lg-6 offset-lg-3 col-md-8 offset-md-2">
+      <form method="post" action="">
+        {{ login_form.hidden_tag() }}
+        <fieldset class="form-group">
+          <legend class="mb-4"> Login</legend>
+          <div class="form-group">
+            {{ login_form.email.label(class="form-control-label") }}
+            {% if login_form.email.errors %}
+              {{ login_form.email(class="form-control form-control-sm is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.email.errors %}
+                  <span> {{ error }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ login_form.email(class="form-control form-control-sm") }}
+            {% endif %}
+          </div>
+          <div class="form-group">
+            {{ login_form.password.label(class="form-control-label") }}
+            {{ login_form.password(class="form-control form-control-sm") }}
+          </div>
+          <div class="form-check m-2">
+            {{ login_form.remember(class="form-check-input") }}
+            {{ login_form.remember.label(class="form-check-label") }}
+          </div>
+          <div class="form-group">
+            {{ login_form.submit(class="btn btn-outline-info") }}
+          </div>
+        </fieldset>
+      </form>
+      <div class="text-center m-4">
+        <p> If you do not have an account, please <a href="{{ url_for('users.registration') }}">register </a></p>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

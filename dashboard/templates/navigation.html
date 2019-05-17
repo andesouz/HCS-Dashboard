@@ -1,0 +1,60 @@
+{% set navigation_bar = [('hcs.active_listings', 'Active Listings'),
+                         ('hcs.price_drops', 'Price Drops'),
+                         ('hcs.new_listings', 'New Listings'),
+                         ('hcs.re_listings', 'Re-listed'),
+                         ('hcs.best_deals', 'Best Deals'),
+                         ('hcs.statistics', 'Statistics'),
+                         ('hcs.about', 'About')] %}
+
+
+<div class="fixed-top">
+  <div class="row bg-dark">
+    <div class="col-12 text-right" id="login_links">
+      <div class="navbar navbar-expand">
+        <ul class="navbar-nav ml-auto list-inline">
+          {% if current_user.is_authenticated %}
+            <li class="nav-item mx-2">
+              <a href="{{ url_for('users.profile') }}">Hello {{ current_user.username }}! </a>
+            </li>
+            <li class="nav-item mx-2">
+              <a href="{{ url_for('users.logout') }}">Logout</a>
+            </li>
+          {% else %}
+
+            <li class="nav-item mx-2">
+              <a href="{{ url_for('users.login') }}">Login</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a href="{{ url_for('users.registration') }}">Sign up</a>
+            </li>
+          {% endif %}
+            <li class="nav-item mx-2">
+              <a href=""> <img src="{{ url_for('static', filename='images/GitHub-Mark-Light-32px.png') }}"></a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <nav {#class="fixed-top"#} id="mainNav">
+    <div class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="{{ url_for('hcs.home') }}">HCS Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            {% for menu_item, title in navigation_bar %}
+              <li class="nav-item {% if menu_active == menu_item %}active{% endif %}">
+                <a class="nav-link js-scroll-trigger" href="{{ url_for(menu_item) }}">{{ title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+</div>
+
+

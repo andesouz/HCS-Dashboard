@@ -1,0 +1,40 @@
+/* FROM: https://stackoverflow.com/questions/12502234/how-to-prevent-webkit-text-rendering-change-during-css-transition */
+@media screen and (-webkit-min-device-pixel-ratio: 2) {
+    body {
+        -webkit-font-smoothing: subpixel-antialiased;
+    }
+}
+
+#wrapper {
+    margin-top: 100px;
+    min-height: 400px;
+}
+
+header {
+  padding: 64px 0 5px;
+}
+
+section#content {
+  padding: 20px 0;
+}
+
+h1 {
+    color: chocolate;
+    text-align: center;
+}
+
+#login_links p, #login_links a {
+    color: lightgray;
+    font-size: 0.8em;
+}
+
+#form_feeder select{
+    margin-left: 10px;
+    min-width: 90%;
+    padding: 0;
+    margin: 0;
+}
+
+#footer p {
+    font-size: 0.7em;
+}

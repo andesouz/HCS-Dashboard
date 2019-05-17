@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if car %}
+    <div class="row">
+      <div class="col-sm-12">
+        <h2> {{car.year_car}} {{car.maker.maker_name}} {{car.model.model_name}}</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6 col-12">
+        <div class="text-left">
+          <h5> Car Details: </h5>
+        </div>
+        <table class="table table-sm">
+          <tr>
+            <td>vin:</td>
+            <td>{{car.vin}}</td>
+          </tr>
+          <tr>
+            <td>color_ext:</td>
+            <td>{{car.color_ext}}</td>
+          </tr>
+          <tr>
+            <td>color_int:</td>
+            <td>{{car.color_int}}</td>
+          </tr>
+          <tr>
+            <td>doors:</td>
+            <td>{{car.doors}}</td>
+          </tr>
+          <tr>
+            <td>drivetrain:</td>
+            <td>{{car.drivetrain}}</td>
+          </tr>
+          <tr>
+            <td>engine:</td>
+            <td>{{car.engine}}</td>
+          </tr>
+          <tr>
+            <td>mpg_city:</td>
+            <td>{{car.mpg_city}}</td>
+          </tr>
+          <tr>
+            <td>mpg_highway:</td>
+            <td>{{car.mpg_highway}}</td>
+          </tr>
+          <tr>
+            <td>transmission:</td>
+            <td>{{car.transmission}}</td>
+          </tr>
+          <tr>
+            <td>trim_car:</td>
+            <td>{{car.trim_car}}</td>
+          </tr>
+          <tr>
+            <td>engine:</td>
+            <td>{{car.engine}}</td>
+          </tr>
+          <tr>
+            <td>bodystyle:</td>
+            <td>{{car.bodystyle.bodystyle_name}}</td>
+          </tr>
+
+        </table>
+      </div>
+      <div class="col-lg-6 col-12">
+        {%  if car.img_src != 'None' %}
+          <div class="float-right mb-2 mr-2">
+            <button class="btn btn-info"
+                    onclick="location.href = '{{ car.get_url() }}'"> Buy Car @ Hertz</button>
+          </div>
+          <img src="{{car.img_src}}" width="500">
+        {% else %}
+          <p class="text-center m-5"> No Image Available</p>
+        {% endif %}
+      </div>
+    </div> <!- row -->
+    <div class="row">
+      <div class="col-12 text-center">
+        <h2> Price History</h2>
+        {% if car.prices %}
+          <table class="table table-sm">
+            <thead class="thead-dark">
+              <tr>
+                <th>date_price</th>
+                <th>miles</th>
+                <th>price</th>
+                <th>kbb_price</th>
+                <th>kbb_difference</th>
+                <th>city</th>
+                <th>state</th>
+                <th>zipcode</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for price in car.prices %}
+              <tr>
+                <td>{{price.date.date_price}}</td>
+                <td>{{ '{:,.0f}'.format(price.miles) }}</td>
+                <td>
+                  {% if price.price > 0 %}
+                    {{ '${:,.0f}'.format(price.price) }}
+                  {%  else %}
+                    <small> not available</small>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if  price.kbb_price > 0 %}
+                    {{ '${:,.0f}'.format(price.kbb_price) }}
+                  {%  else %}
+                    <small> not available</small>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if  price.kbb_difference > 0 %}
+                    {{ '${:,.0f}'.format(price.kbb_difference) }}
+                  {%  else %}
+                    <small> not available</small>
+                  {% endif %}
+                </td>
+                <td>{{price.location.city}}</td>
+                <td>{{price.location.state}}</td>
+                <td>{{price.location.zipcode}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p class="fa-bold"> No data available for this vehicle</p>
+        {% endif%}
+      </div>
+
+    </div>
+  {% else %} {#<!-- if car -->#}
+    <div class="row">
+      <div class="text-center col-12 m-4">
+        <h4 class="text-center m-4"> NO DATA AVAILABLE </h4>
+        <p> No data available for the vehicle you are looking for. </br>
+          Please try a different vehicle.</p>
+      </div>
+    </div>
+  {% endif %}
+
+{% endblock content %}

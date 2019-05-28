@@ -4,9 +4,9 @@
   <div class="row">
     <div class="col-12 m-2">
       <h3> Hertz Car Sales Dashboard</h3>
-      <p>This website provides analytics for Hertz Car sales web portal. It intends to make easy for potential buyers to
-        find great deals. Price history is available for all vehicles current active.</p>
-      <p>All listings monitored here are based on a geographical search centered in San Diego, CA and extending for a 100
+      <p>This website provides analytics for Hertz Car sales web portal. It is intended to facilitate and complement Hertz own car sales website functionality to make easier for potential buyers to
+        find great deals. Price history is available for all current active vehicles .</p>
+      <p>All listings monitored here are based on a geographical search centered in San Diego, CA and extending for 100
         miles.</p>
       <p>This website is designed as a proof of concept and has no commercial purposes. There are absolute no warranties,
         including accuracy or consistency, for any listing displayed here. HCS Dashboard is not affiliated in any way, shape or form with Hertz Car Sales. </p>
@@ -15,6 +15,34 @@
 
       <p>Some pages require registration. For access, please <a href="{{ url_for('users.registration') }}">sign up</a> today.</p>
     </div>
+  </div>
+  <div class="row text-left">
+    <div class="col-6 col-md-3 col-xl-2 my-1">
+      <a class="btn btn-warning btn-block" href="{{ url_for('hcs.active_listings') }}" role="button">Active Listings</a>
+      <p class="my-2"> List all vehicles actively for sale at specified date. Use filters to narrow down your search.</p>
+    </div>
+    <div class="col-6 col-md-3 col-xl-2 my-1">
+      <a class="btn btn-warning btn-block" href="{{ url_for('hcs.price_drops') }}" role="button">Price Drops</a>
+      <p class="my-2"> Lists all vehicles with price reduction at report date. Listings are ordered from largest to lowest price drop.</p>
+    </div>
+    <div class="col-6 col-md-3 col-xl-2 my-1">
+      <a class="btn btn-warning btn-block" href="{{ url_for('hcs.new_listings') }}" role="button">New Listings</a>
+      <p class="my-2"> Lists all vehicles listed for the first time at current date.</p>
+    </div>
+    <div class="col-6 col-md-3 col-xl-2 my-1">
+      <a class="btn btn-warning btn-block" href="{{ url_for('hcs.re_listings') }}" role="button">Re-listed </a>
+      <p class="my-2"> Lists all vehicles that have been re-listed at current date. Check vehicle detailed page for price history.</p>
+    </div>
+    <div class="col-6 col-md-3 col-xl-2 my-1">
+      <a class="btn btn-warning btn-block" href="{{ url_for('hcs.best_deals') }}" role="button">Best Deals </a>
+      <p class="my-2"> Order all active listings by relative price difference to KBB price. You must sign up to access this page. <a href="{{ url_for('users.registration') }}">Sign up!</a> </p>
+    </div>
+
+    <div class="col-6 col-md-3 col-xl-2 my-1">
+      <a class="btn btn-warning btn-block" href="{{ url_for('hcs.statistics') }}" role="button">Statistics </a>
+      <p class="my-2"> Provides some general statistics about all vehicles found in a given data interval.</p>
+    </div>
+
   </div>
 
 {% endblock content %}

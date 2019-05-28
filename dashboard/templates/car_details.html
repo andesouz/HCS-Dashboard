@@ -6,6 +6,10 @@
       <div class="col-sm-12">
         <h2> {{car.year_car}} {{car.maker.maker_name}} {{car.model.model_name}}</h2>
       </div>
+      <div class="col-sm-12 text-left my-1">
+        <button class="btn btn-warning"
+                onclick="location.href = '{{ car.get_url() }}'"> Buy Car @ Hertz</button>
+      </div>
     </div>
     <div class="row">
       <div class="col-lg-6 col-12">
@@ -64,13 +68,13 @@
 
         </table>
       </div>
-      <div class="col-lg-6 col-12">
+      <div class="col-lg-6 col-12 p-3">
         {%  if car.img_src != 'None' %}
-          <div class="float-right mb-2 mr-2">
-            <button class="btn btn-info"
-                    onclick="location.href = '{{ car.get_url() }}'"> Buy Car @ Hertz</button>
-          </div>
-          <img src="{{car.img_src}}" width="500">
+{#          <div class="float-right mb-2 mr-2">#}
+{#            <button class="btn btn-warning btn-block"#}
+{#                    onclick="location.href = '{{ car.get_url() }}'"> Buy Car @ Hertz</button>#}
+{#          </div>#}
+          <img  src="{{car.img_src}}" width="500">
         {% else %}
           <p class="text-center m-5"> No Image Available</p>
         {% endif %}
@@ -82,16 +86,16 @@
         {% if car.prices %}
           <table class="table table-sm">
             <thead class="thead-dark">
-              <tr>
-                <th>date_price</th>
-                <th>miles</th>
-                <th>price</th>
-                <th>kbb_price</th>
-                <th>kbb_difference</th>
-                <th>city</th>
-                <th>state</th>
-                <th>zipcode</th>
-              </tr>
+            <tr>
+              <th>date_price</th>
+              <th>miles</th>
+              <th>price</th>
+              <th>kbb_price</th>
+              <th>kbb_difference</th>
+              <th>city</th>
+              <th>state</th>
+              <th>zipcode</th>
+            </tr>
             </thead>
             <tbody>
             {% for price in car.prices %}
@@ -123,7 +127,7 @@
                 <td>{{price.location.state}}</td>
                 <td>{{price.location.zipcode}}</td>
               </tr>
-              {% endfor %}
+            {% endfor %}
             </tbody>
           </table>
         {% else %}

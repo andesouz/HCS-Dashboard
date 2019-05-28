@@ -1,14 +1,14 @@
-<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 col-6 pb-4" id="card_{{ loop_index }}">
-  <div class="text-left" onclick="location.href = '{{ url_for("hcs.car_details", car_uuid=price.uuid) }}'" style="cursor: pointer">
+<div class="col-xl-2 col-md-3 col-sm-4 col-xs-6 col-6 pb-4" id="card_{{ loop_index }}">
+  <div class="car_block text-left" onclick="location.href = '{{ url_for("hcs.car_details", car_uuid=price.uuid) }}'" style="cursor: pointer">
     <b id="price">${{ "{:,.0f}".format(price.price) }}</b></br>
     {% if difference %}  drop:  <b>{{ "${:,.0f}".format(difference) }}</b> </br> {% endif %}
     {% if menu_active == 'hcs.best_deals' %}
       <small>disc(kbb): </small>{{ "${:,.0f}".format(price.kbb_difference / price.kbb_price * 100) }}% </br>
     {% endif %}
     <b id="year">{{ price.car.year_car }}</b></br>
-    <small id="maker">{{ price.car.maker.maker_name }}</small></br>
-    <small id="model">{{ price.car.model.model_name }}</small> <small id="trim">{{ price.car.trim_car | truncate(11, True) }}</small> </br>
-    <small id="bodystyle">{{ price.car.bodystyle.bodystyle_name }}</small></br>
+    <small class="car_block_maker">{{ price.car.maker.maker_name }}</small></br>
+    <small class="car_block_model">{{ price.car.model.model_name }}</small> <small class="car_block_trim">{{ price.car.trim_car | truncate(11, True) }}</small> </br>
+    <small class="car_block_bodystyle">{{ price.car.bodystyle.bodystyle_name }}</small></br>
     <small>{{ '{:,.0f} mi'.format(price.miles) }}</small> </p>
     {% if price.car.img_src != 'None' %}
       <div class="text-left">

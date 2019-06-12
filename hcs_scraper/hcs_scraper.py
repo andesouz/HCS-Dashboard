@@ -1,4 +1,5 @@
 import os
+import re
 import requests
 import datetime
 from selenium import webdriver
@@ -84,59 +85,81 @@ def hcs_execute(WAIT_TIME, WEB_DRIVER_PATH, SEARCH_AREA_ZIP_CODE, SEARCH_AREA_DI
                     continue
 
                 try:
-                    # click for details
                     X = "div/div[@class='simple-info']"
                     div = WebDriverWait(li, WAIT_TIME).until(EC.presence_of_element_located((By.XPATH, X)))
                     X = "div[@class='simple-btn-wrap']/a"
+                    # click for details
                     a = WebDriverWait(div, WAIT_TIME).until(EC.element_to_be_clickable((By.XPATH, X)))
                     a.click()
                 except Exception as e:
                     logger.error('Could not click for details:  ' + str(type(e)) + str(e))
                     continue
                 try:
-                    lst = div.text.split('\n')
+                    # lst = div.text.split('\n')
+                    lst = re.split(r'\s+', div.text)
                 except StaleElementReferenceException as e:
                     logger.error('StaleElementReferenceException trying to lst = div.text.split("\\n")')
                     continue
 
-                miles = mpg_city = mpg_highway = None
-                color_ext = color_int = ''
-                fields = map(str.strip, lst[1].split('•'))
-                for f in fields:
-                    if f.startswith('Mileage'):
-                        miles = int(f.split()[1].replace(',', ''))
-                    elif f.startswith('Exterior'):
-                        color_ext = ' '.join(f.split()[2:])
-                    elif f.startswith('Interior'):
-                        color_int = ' '.join(f.split()[2:])
-                    elif f.startswith('MPG'):
-                        mpg = ' '.join(f.split()[2:])
-                        mpg_city, mpg_highway = map(float, mpg.split('/'))
+                miles = None
+                mpg_city = None
+                mpg_highway = None
+                color_ext = ''
+                color_int = ''
+                kbb_price = None
+                kbb_difference = None
+                price = None
+
+                try:
+                    idx = 0
+                    while idx < len(lst):
+                        if lst[idx] == 'Mileage':
+                            miles = int(lst[idx+1].replace(',', ''))
+                            idx += 2
+                        elif lst[idx] == 'Exterior' and (lst[idx+1] == 'Color'):
+                            idx_look_forward = idx + 2
+                            while lst[idx_look_forward] != '•' and (idx_look_forward < len(lst)):
+                                color_ext += lst[idx_look_forward] + ' '
+                                idx_look_forward += 1
+                            color_ext = color_ext.strip()
+                            idx = idx_look_forward + 1
+                        elif lst[idx] == 'Interior' and (lst[idx+1] == 'Color'):
+                            idx_look_forward = idx + 2
+                            while lst[idx_look_forward] != '•' and (idx_look_forward < len(lst)):
+                                color_int += lst[idx_look_forward] + ' '
+
+
+
+                                idx_look_forward += 1
+                            color_int = color_int.strip()
+                            idx = idx_look_forward + 1
+                        elif lst[idx] == 'MPG' and (lst[idx + 1] == 'Range'):
+                            mpg = lst[idx + 2]
+                            mpg_city, mpg_highway = map(float, mpg.split('/'))
+                            idx += 3
+                        elif lst[idx] == 'KBB' and (lst[idx + 1] == 'Price'):
+                            kbb_price = int(lst[idx + 3].strip().replace('$', '').replace(',', ''))
+                            idx += 4
+                        elif lst[idx] == 'Price' and (lst[idx + 1] == 'Difference'):
+                            kbb_difference = int(lst[idx + 3].strip().replace('$', '').replace(',', ''))
+                            idx += 4
+                        elif lst[idx] == 'Price' and (lst[idx + 1] == ':'):
+                            price = int(lst[idx + 2].strip().replace('$', '').replace(',', ''))
+                            idx += 4
+                        else:
+                            idx += 1
+
+                except Exception as e:
+                    logger.error('Parsing error, skipping car: ' + str(type(e)) + ': ' + str(e))
+                    continue
+
+                row.miles = miles
                 row.color_ext, row.color_int = color_ext, color_int
                 row.mpg_city, row.mpg_highway = mpg_city, mpg_highway
 
-                kbb_price = kbb_difference = price = None
-                for idx in range(3, 10, 2):
-                    try:
-                        label = lst[idx]
-                        if label.startswith('KBB'):
-                            try:
-                                kbb_price = int(lst[idx + 1].strip().replace('$', '').replace(',', ''))
-                            except ValueError:
-                                logger.info(f'NoData: {row.vin}  Non number kbb price {row.model}')
-                        elif label.startswith('Price'):
-                            try:
-                                kbb_difference = int(lst[idx + 1].strip().replace('$', '').replace(',', ''))
-                            except ValueError:
-                                logger.info(f'NoData: {row.vin}  Non number kbb diff {row.model}')
-                        elif label.startswith('No Haggle'):
-                            try:
-                                price = int(lst[idx + 1].strip().replace('$', '').replace(',', ''))
-                            except ValueError:
-                                logger.info(f'NoData: {row.vin}  No price {row.model}')
-                    except IndexError as e:
-                        # may not have all lines. That's fine.
-                        break
+                row.price = price
+                row.kbb_difference = kbb_difference
+                row.kbb_price = kbb_price
 
                 try:
                     X = 'div/div/div/div/div[1]/img[1]'
@@ -146,13 +169,12 @@ def hcs_execute(WAIT_TIME, WEB_DRIVER_PATH, SEARCH_AREA_ZIP_CODE, SEARCH_AREA_DI
                     logger.info('Error finding image: ' + str(type(e)) + ' : ' + str(e))
                     img_src = None
                 row.img_src = img_src.split('?')[0] if img_src else None
-
-                row.miles = miles
-                row.price = price
                 row.date = datetime.date.today()
-                row.kbb_difference = kbb_difference
-                row.kbb_price = kbb_price
                 row.accountid, row.city, row.state, row.zipcode = data_price
+
+                # debug code
+                # attributes = [attr for attr in dir(row) if not attr.startswith('_')]
+                # logger.info(' : '.join([x + f' : {getattr(row, x)} ,' for x in attributes]))
 
                 all_data.append(row)
 

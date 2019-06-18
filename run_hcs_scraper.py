@@ -22,6 +22,7 @@ You can download geckodriver at https://github.com/mozilla/geckodriver/releases
 """
 import os
 import sys
+from time import sleep
 import datetime
 import getopt
 import logging
@@ -82,17 +83,32 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 all_data = []
+RETRY_MAX = 3
 if not skip_scraping:
     logger.info('Begin Scraping www.hertzcarsales.com')
-    all_data = hcs_scraper.hcs_execute(WAIT_TIME,
-                                       WEB_DRIVER_PATH,
-                                       SEARCH_AREA_ZIP_CODE,
-                                       SEARCH_AREA_DISTANCE,
-                                       ScrapedData,
-                                       logger)
+    retry_count = 1
+    while retry_count <= RETRY_MAX:
+        all_data = hcs_scraper.hcs_execute(WAIT_TIME,
+                                           WEB_DRIVER_PATH,
+                                           SEARCH_AREA_ZIP_CODE,
+                                           SEARCH_AREA_DISTANCE,
+                                           ScrapedData,
+                                           logger)
+        if all_data:
+            break
+        else:
+            logger.error('Error detected, waiting 5min before retry')
+            sleep(60 * 5)
+            logger.info(f'Retrying {retry_count} of {RETRY_MAX}')
+            retry_count += 1
+
+    if not all_data:
+        logger.error('Scraper Failed All Retries! Terminate')
+        sys.exit(-1)
+
     logger.info(f"Scraper finished gracefully, {len(all_data)} listings found")
 else:
-    logger.info('Skipping Scraper - Flag on')
+    logger.info('Skipping Scraper Flag On')
 
 # Create csv file with today's listings
 if all_data:
@@ -151,3 +167,4 @@ if all_csv_files:
                     logger.error(f"Could not delete file: {absolute_path_filename}")
 
 logger.info('Finished Updating Server - Closing')
+sys.exit()

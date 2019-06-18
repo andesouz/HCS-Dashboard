@@ -216,6 +216,3 @@ venv.bak/
 
 # PyCharm
 .idea
-
-# HCS Project
-config.py

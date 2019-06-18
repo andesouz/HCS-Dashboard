@@ -60,7 +60,7 @@ def hcs_execute(WAIT_TIME, WEB_DRIVER_PATH, SEARCH_AREA_ZIP_CODE, SEARCH_AREA_DI
                 lis = WebDriverWait(driver, WAIT_TIME).until(EC.presence_of_all_elements_located((By.XPATH, X)))
             except TimeoutException as e:
                 logger.error('Could not locate list of cars (lis). Results may be partial: ' + str(type(e)) + str(e))
-                return all_data
+                return []  # return an empty list to prevent partial results
 
             for li in lis:
                 data_car = []
